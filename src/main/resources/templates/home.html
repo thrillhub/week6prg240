@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Search Portal</title>
+    <link rel="stylesheet" href="/src/main/resources/static/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        header {
+            position: relative;
+            background-color: aquamarine;
+            padding: 30px;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            margin: 0;
+            padding-left: 50px !important;
+            font-weight: 600;
+            font-size: 2.5rem;
+            color: #333;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-bar input {
+            padding: 12px 20px;
+            margin-right: 10px;
+            border-radius: 25px;
+            border: 1px solid #ddd;
+            width: 250px;
+            font-size: 1rem;
+        }
+        
+        .search-bar button {
+            padding: 12px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .search-bar button:hover {
+            background-color: #218838;
+        }
+        
+        .user-icon {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .icon {
+            font-size: 30px;
+            color: #333;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ddd;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            width: 200px;
+            border-radius: 8px;
+        }
+        
+        .dropdown-content a {
+            padding: 12px 20px;
+            text-decoration: none;
+            display: block;
+            color: #333;
+            border-bottom: 1px solid #f5f5f5;
+            border-radius: 8px;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+        
+        .show {
+            display: block;
+        }
+        
+        .filter-sidebar {
+            background-color: #ecf0f1;
+            padding: 20px;
+            width: 150px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+        
+        .filter-sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .filter-group {
+            margin-bottom: 20px;
+        }
+        
+        .filter-group label {
+            display: block;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+        
+        .filter-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #bdc3c7;
+            font-size: 1rem;
+        }
+        
+        .filter-btn {
+            padding: 12px;
+            width: 100%;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .filter-btn:hover {
+            background-color: #229954;
+        }
+        
+        main {
+            margin-left: 270px;
+            padding: 20px;
+            flex: 1;
+        }
+        
+        #jobListings {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .job-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .job-card h3 {
+            margin: 0 0 10px;
+            color: #2980b9;
+            font-weight: 600;
+        }
+        
+        .job-card p {
+            margin: 5px 0;
+            color: #7f8c8d;
+        }
+        
+        .apply-btn {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .apply-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        footer {
+            background-color: #34495e;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        .icon {
+            color: rgba(34, 34, 246, 0.596);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Find Your Dream Job</h1>
+        <div class="search-bar">
+            <input type="text" id="jobSearch" placeholder="Search for jobs...">
+            <button onclick="searchJobs()">Search</button>
+        </div>
+        <div class="user-icon" id="userIcon">
+            <i class="fas fa-user icon" onclick="toggleDropdown()"></i>
+            <div id="userDropdown" class="dropdown-content">
+                <a href="/login">Logout</a>
+                <a th:href="@{/users}" class="btn btn-primary">View User List</a>
+            </div>
+        </div>
+    </header>
+
+    <aside class="filter-sidebar">
+        <h2>Filter by:</h2>
+        <div class="filter-group">
+            <label for="jobType">Job Type:</label>
+            <select id="jobType">
+                <option value="all">All</option>
+                <option value="full-time">Full-Time</option>
+                <option value="part-time">Part-Time</option>
+                <option value="freelance">Freelance</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="location">Location:</label>
+            <select id="location">
+                <option value="all">All</option>
+                <option value="remote">Remote</option>
+                <option value="onsite">On-site</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="experience">Experience Level:</label>
+            <select id="experience">
+                <option value="all">All</option>
+                <option value="junior">Junior</option>
+                <option value="mid">Mid-Level</option>
+                <option value="senior">Senior</option>
+            </select>
+        </div>
+        <button class="filter-btn" onclick="filterJobs()">Apply Filters</button>
+    </aside>
+
+    <main>
+        <section id="jobListings">
+            <h2>Available Jobs</h2>
+
+            <div class="job-card">
+                <h3>Software Developer</h3>
+                <p><strong>Location:</strong> Remote</p>
+                <p><strong>Type:</strong> Full-Time</p>
+                <p><strong>Experience:</strong> Mid-Level</p>
+                <button class="apply-btn">Apply Now</button>
+            </div>
+
+            <div class="job-card">
+                <h3>Data Analyst</h3>
+                <p><strong>Location:</strong> On-site</p>
+                <p><strong>Type:</strong> Part-Time</p>
+                <p><strong>Experience:</strong> Junior</p>
+                <button class="apply-btn">Apply Now</button>
+            </div>
+
+            <div class="job-card">
+                <h3>UI/UX Designer</h3>
+                <p><strong>Location:</strong> Remote</p>
+                <p><strong>Type:</strong> Freelance</p>
+                <p><strong>Experience:</strong> Senior</p>
+                <button class="apply-btn">Apply Now</button>
+            </div>
+
+            <div class="job-card">
+                <h3>Project Manager</h3>
+                <p><strong>Location:</strong> On-site</p>
+                <p><strong>Type:</strong> Full-Time</p>
+                <p><strong>Experience:</strong> Senior</p>
+                <button class="apply-btn">Apply Now</button>
+            </div>
+
+            <div class="job-card">
+                <h3>QA Tester</h3>
+                <p><strong>Location:</strong> Remote</p>
+                <p><strong>Type:</strong> Part-Time</p>
+                <p><strong>Experience:</strong> Mid-Level</p>
+                <button class="apply-btn">Apply Now</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Job Search Portal. All rights reserved.</p>
+    </footer>
+
+    <script src="/js/script.js"></script>
+</body>
+
+</html>
