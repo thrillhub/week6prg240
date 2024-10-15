@@ -12,10 +12,10 @@ import com.enjoy.job.registrationlogin.dto.UserDto;
 import com.enjoy.job.registrationlogin.entity.User;
 import com.enjoy.job.registrationlogin.service.UserService;
 
+
 @Controller
 @RequestMapping("/user")
 public class AakashController {
-
     private final UserService userService;
 
     public AakashController(UserService userService) {

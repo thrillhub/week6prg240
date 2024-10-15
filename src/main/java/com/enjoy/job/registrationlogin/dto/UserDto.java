@@ -25,7 +25,6 @@ public class UserDto {
     @NotEmpty(message = "Password should not be empty")
     private String password;
 
-    // Add this constructor for firstName, lastName, and email
     public UserDto(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;

@@ -21,10 +21,8 @@
         }
         
         header {
-            position: relative;
-            background-color: aquamarine;
-            padding: 30px;
             background-color: #fff;
+            padding: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -33,7 +31,7 @@
         
         header h1 {
             margin: 0;
-            padding-left: 50px !important;
+            padding-left: 170px !important;
             font-weight: 600;
             font-size: 2.5rem;
             color: #333;
@@ -206,6 +204,78 @@
         .apply-btn:hover {
             background-color: #2980b9;
         }
+        /* Modal styling */
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%;
+            border-radius: 10px;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="file"],
+        textarea {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+        
+        button.submit-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        button.submit-btn:hover {
+            background-color: #218838;
+        }
         
         footer {
             background-color: #34495e;
@@ -215,10 +285,6 @@
             position: relative;
             bottom: 0;
             width: 100%;
-        }
-        
-        .icon {
-            color: rgba(34, 34, 246, 0.596);
         }
     </style>
 </head>
@@ -240,7 +306,7 @@
     </header>
 
     <aside class="filter-sidebar">
-        <h2>Filter by:</h2>
+        <h2>Filter Jobs</h2>
         <div class="filter-group">
             <label for="jobType">Job Type:</label>
             <select id="jobType">
@@ -250,23 +316,16 @@
                 <option value="freelance">Freelance</option>
             </select>
         </div>
+
         <div class="filter-group">
             <label for="location">Location:</label>
             <select id="location">
                 <option value="all">All</option>
                 <option value="remote">Remote</option>
-                <option value="onsite">On-site</option>
+                <option value="onsite">On-Site</option>
             </select>
         </div>
-        <div class="filter-group">
-            <label for="experience">Experience Level:</label>
-            <select id="experience">
-                <option value="all">All</option>
-                <option value="junior">Junior</option>
-                <option value="mid">Mid-Level</option>
-                <option value="senior">Senior</option>
-            </select>
-        </div>
+
         <button class="filter-btn" onclick="filterJobs()">Apply Filters</button>
     </aside>
 
@@ -279,7 +338,7 @@
                 <p><strong>Location:</strong> Remote</p>
                 <p><strong>Type:</strong> Full-Time</p>
                 <p><strong>Experience:</strong> Mid-Level</p>
-                <button class="apply-btn">Apply Now</button>
+                <button class="apply-btn" onclick="openModal()">Apply Now</button>
             </div>
 
             <div class="job-card">
@@ -287,7 +346,7 @@
                 <p><strong>Location:</strong> On-site</p>
                 <p><strong>Type:</strong> Part-Time</p>
                 <p><strong>Experience:</strong> Junior</p>
-                <button class="apply-btn">Apply Now</button>
+                <button class="apply-btn" onclick="openModal()">Apply Now</button>
             </div>
 
             <div class="job-card">
@@ -295,7 +354,7 @@
                 <p><strong>Location:</strong> Remote</p>
                 <p><strong>Type:</strong> Freelance</p>
                 <p><strong>Experience:</strong> Senior</p>
-                <button class="apply-btn">Apply Now</button>
+                <button class="apply-btn" onclick="openModal()">Apply Now</button>
             </div>
 
             <div class="job-card">
@@ -303,7 +362,7 @@
                 <p><strong>Location:</strong> On-site</p>
                 <p><strong>Type:</strong> Full-Time</p>
                 <p><strong>Experience:</strong> Senior</p>
-                <button class="apply-btn">Apply Now</button>
+                <button class="apply-btn" onclick="openModal()">Apply Now</button>
             </div>
 
             <div class="job-card">
@@ -311,16 +370,78 @@
                 <p><strong>Location:</strong> Remote</p>
                 <p><strong>Type:</strong> Part-Time</p>
                 <p><strong>Experience:</strong> Mid-Level</p>
-                <button class="apply-btn">Apply Now</button>
+                <button class="apply-btn" onclick="openModal()">Apply Now</button>
             </div>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2024 Job Search Portal. All rights reserved.</p>
-    </footer>
+    <div id="applyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Apply for Job</h2>
+            <form onsubmit="submitApplication(event)">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
 
-    <script src="/js/script.js"></script>
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" name="phone" required>
+
+                <label for="education">Education:</label>
+                <input type="text" id="education" name="education" required>
+
+                <label for="experience">Experience:</label>
+                <textarea id="experience" name="experience" rows="4" required></textarea>
+
+                <label for="cv">Upload CV:</label>
+                <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx" required>
+
+                <button type="submit" class="submit-btn">Submit Application</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>Job Portal &copy; 2024</p>
+    </footer>
+    <script>
+        function toggleDropdown() {
+            document.getElementById("userDropdown").classList.toggle("show");
+        }
+        window.onclick = function(event) {
+            if (!event.target.matches('.icon')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        };
+
+        function openModal() {
+            document.getElementById("applyModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("applyModal").style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById("applyModal")) {
+                closeModal();
+            }
+        };
+
+        function submitApplication(event) {
+            event.preventDefault();
+            alert("Application submitted successfully!");
+            closeModal();
+        }
+    </script>
 </body>
 
 </html>

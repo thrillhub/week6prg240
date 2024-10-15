@@ -12,7 +12,6 @@ import com.enjoy.job.registrationlogin.entity.Role;
 import com.enjoy.job.registrationlogin.entity.User;
 import com.enjoy.job.registrationlogin.repository.RoleRepository;
 import com.enjoy.job.registrationlogin.repository.UserRepository;
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -52,7 +51,6 @@ public class UserServiceImpl implements UserService {
         if (userDto.getPassword() != null && !userDto.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         }
-
         userRepository.save(user);
     }
     @Override
@@ -72,16 +70,13 @@ public class UserServiceImpl implements UserService {
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
-
     @Override
     public List<UserDto> findAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
-
     private UserDto convertEntityToDto(User user) {
         UserDto userDto = new UserDto();
-        
         userDto.setId(user.getId()); 
 
         String[] nameParts = user.getName().split(" ");
